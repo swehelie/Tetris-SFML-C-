@@ -6,4 +6,4 @@ developed using **SFML** and **C++** on the Xcode IDE.
 
 ## How It Works
 1. The most prominent files in this program is the main.cpp file and the .png images.
-2. 
+
