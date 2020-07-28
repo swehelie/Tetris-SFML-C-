@@ -1,17 +1,6 @@
 
-//
-// Disclaimer:
-// ----------
-//
-// This code will work only if you selected window, graphics and audio.
-//
-// Note that the "Run Script" build phase will copy the required frameworks
-// or dylibs to your application bundle so you can execute it on any OS X
-// computer.
-//
-// Your resource files (images, sounds, fonts, ...) are also copied to your
-// application bundle. To get the path to these resources, use the helper
-// function `resourcePath()` from ResourcePath.hpp
+//  Created by Sarah Wehelie on 7/19/20.
+//  Copyright © 2020 Sarah Wehelie. All rights reserved.
 //
 
 #include <SFML/Audio.hpp>
@@ -28,8 +17,7 @@ int field[M][N] = {0};
 struct Point
 {int x,y;} a[4], b[4];
 
-int figures[7][4] =
-{
+int figures[7][4] ={
     1,3,5,7, // I
     2,4,5,7, // Z
     3,5,4,6, // S
@@ -39,8 +27,7 @@ int figures[7][4] =
     2,3,4,5, // O
 };
 
-bool check()
-{
+bool check(){
    for (int i=0;i<4;i++)
       if (a[i].x<0 || a[i].x>=N || a[i].y>=M) return 0;
       else if (field[a[i].y][a[i].x]) return 0;
@@ -49,8 +36,7 @@ bool check()
 };
 
 
-int main()
-{
+int main(){
     srand(time(0));
 
     RenderWindow window(VideoMode(320, 480), "The Game!");
@@ -67,15 +53,13 @@ int main()
 
     Clock clock;
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()){
         float time = clock.getElapsedTime().asSeconds();
         clock.restart();
         timer+=time;
 
         Event e;
-        while (window.pollEvent(e))
-        {
+        while (window.pollEvent(e)){
             if (e.type == Event::Closed)
                 window.close();
 
@@ -92,11 +76,9 @@ int main()
     if (!check()) for (int i=0;i<4;i++) a[i]=b[i];
 
     //////Rotate//////
-    if (rotate)
-      {
+    if (rotate){
         Point p = a[1]; //center of rotation
-        for (int i=0;i<4;i++)
-          {
+        for (int i=0;i<4;i++){
             int x = a[i].y-p.y;
             int y = a[i].x-p.x;
             a[i].x = p.x - x;
@@ -106,18 +88,15 @@ int main()
       }
 
     ///////Tick//////
-    if (timer>delay)
-      {
+    if (timer>delay) {
         for (int i=0;i<4;i++) { b[i]=a[i]; a[i].y+=1; }
 
-        if (!check())
-        {
+        if (!check()){
          for (int i=0;i<4;i++) field[b[i].y][b[i].x]=colorNum;
 
          colorNum=1+rand()%7;
          int n=rand()%7;
-         for (int i=0;i<4;i++)
-           {
+         for (int i=0;i<4;i++){
             a[i].x = figures[n][i] % 2;
             a[i].y = figures[n][i] / 2;
            }
@@ -128,11 +107,9 @@ int main()
 
     ///////check lines//////////
     int k=M-1;
-    for (int i=M-1;i>0;i--)
-    {
+    for (int i=M-1;i>0;i--){
         int count=0;
-        for (int j=0;j<N;j++)
-        {
+        for (int j=0;j<N;j++) {
             if (field[i][j]) count++;
             field[k][j]=field[i][j];
         }
@@ -145,18 +122,17 @@ int main()
     window.clear(Color::White);
     window.draw(background);
           
-    for (int i=0;i<M;i++)
-     for (int j=0;j<N;j++)
-       {
+    for (int i=0;i<M;i++){
+        for (int j=0;j<N;j++) {
          if (field[i][j]==0) continue;
          s.setTextureRect(IntRect(field[i][j]*18,0,18,18));
          s.setPosition(j*18,i*18);
          s.move(28,31); //offset
          window.draw(s);
-       }
+        }
+    }
 
-    for (int i=0;i<4;i++)
-      {
+    for (int i=0;i<4;i++) {
         s.setTextureRect(IntRect(colorNum*18,0,18,18));
         s.setPosition(a[i].x*18,a[i].y*18);
         s.move(28,31); //offset
